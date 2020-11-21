@@ -10,15 +10,11 @@ module Mutations
     argument :password, String, required: true
     argument :password_confirmation, String, required: true
 
-    type Types::Payloads::RegisterUserType
+    type ::Types::Payloads::RegisterUserType
 
     def resolve(**params)
-    end
-
-    private
-
-    def register_user(params:)
-
+      result = ::RegisterUser.call(params)
+      result.success? ? result : execution_error(message: result.error)
     end
   end
 end
