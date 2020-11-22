@@ -1,16 +1,13 @@
 module Mutations
   class RegisterUser < BaseMutation
-    argument :first_name, String, required: true
-    argument :middle_name, String, required: false
-    argument :last_name, String, required: true
-    argument :suffix, String, required: false
-    argument :gender, Integer, required: true
-    argument :age, Integer, required: true
+    description "Register new user."
+
     argument :email, String, required: true
     argument :password, String, required: true
     argument :password_confirmation, String, required: true
+    argument :profile, Types::Inputs::ProfileInput, required: true
 
-    type ::Types::Payloads::RegisterUserType
+    type ::Types::Payloads::AuthenticatedUserType
 
     def resolve(**params)
       result = ::RegisterUser.call(params)

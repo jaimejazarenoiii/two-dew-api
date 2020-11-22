@@ -1,5 +1,5 @@
 module Types
-  class Payloads::RegisterUserType < Types::BaseObject
+  class Payloads::AuthenticatedUserType < Types::BaseObject
     field :token, String, null: false
     field :user, Types::UserType, null: false
   end

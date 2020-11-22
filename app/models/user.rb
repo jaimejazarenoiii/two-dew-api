@@ -35,5 +35,7 @@ class User < ApplicationRecord
   validates :first_name, :middle_name, :last_name,  length: { maximum: 20 }
   validates :age, inclusion: 13..100
   validates :suffix, length: { maximum: 3 }
+  validates :password, :password_confirmation, presence: true, length: { in: 6..15 }
+  validates_confirmation_of :password
 
 end

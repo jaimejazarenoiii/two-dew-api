@@ -2,7 +2,9 @@ class ValidateRegisterParams
   include Interactor
 
   def call
-    @user = User.new(context.to_h)
+    new_hash = context.to_h.map { |k,v| k==:profile ? v.to_h : { k => v } }
+      .reduce({}, :merge)
+    @user = User.new(new_hash)
     context.user = @user
 
     context.fail!(error: @user.errors.full_messages.to_sentence) unless @user.save
