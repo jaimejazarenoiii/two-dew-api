@@ -30,7 +30,6 @@ class User < ApplicationRecord
   # :confirst_name, length: { maximum: 50 }
   devise :database_authenticatable, :registerable, :recoverable, stretches: 13
   enum gender: [:male, :female]
-  belongs_to :memberable, polymorphic: true, optional: true
   validates :email, presence: true, uniqueness: true
   validates :first_name, :middle_name, :last_name,  length: { maximum: 20 }
   validates :age, inclusion: 13..100
@@ -38,4 +37,7 @@ class User < ApplicationRecord
   validates :password, :password_confirmation, presence: true, length: { in: 6..15 }
   validates_confirmation_of :password
 
+  belongs_to :memberable, polymorphic: true, optional: true
+  has_many :projects, dependent: :destroy
+  has_many :tasks, through: :projects, dependent: :destroy
 end

@@ -25,4 +25,23 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Task < ApplicationRecord
+  belongs_to :project
+  belongs_to :owner, class_name: "User", foreign_key: "user_id"
+  has_many :members, class_name: "User", as: :memberable
+  has_many :taggings
+  has_many :tags, through: :taggings, dependent: :destroy
+
+  enum status: [:backlog, :todo, :in_progress, :completed]
+  validates :percentage, inclusion: 0..100
+  validate :due_date_cannot_be_in_the_past
+
+  accepts_nested_attributes_for :tags, allow_destroy: true
+
+  private
+
+  def due_date_cannot_be_in_the_past
+    if due_date.present? && due_date < Date.today
+      errors.add(:due_date, "can't be in the past")
+    end
+  end
 end
