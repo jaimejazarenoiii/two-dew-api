@@ -25,6 +25,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: development
+      - name: Display dir
+        run: |
+          ls -al
       - name: Install Ruby
         uses: ruby/setup-ruby@v1.59.0
         with:
