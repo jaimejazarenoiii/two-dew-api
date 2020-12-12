@@ -36,7 +36,7 @@ jobs:
         with:
           name: jaimejazarenoiii/two-dew-api/two-dew
           registry: docker.pkg.github.com
-          username: ${{ secrets.GITHUB_USERNAME }}
+          username: ${{ secrets.USERNAME_GITHUB }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: Dockerfile
           tags: latest
