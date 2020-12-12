@@ -41,5 +41,5 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ secrets.USERNAME_GITHUB }}
           password: ${{ secrets.TOKEN_GITHUB }}
-          dockerfile: ../../Dockerfile
+          dockerfile: ../../../Dockerfile
           tags: latest
