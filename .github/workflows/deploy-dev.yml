@@ -23,8 +23,7 @@ jobs:
     steps:
       - name: Checkout development
         uses: actions/checkout@v2
-        with:
-          path: development
+
       - name: Build site assets
         working-directory: ${{ github.workspace }}
         run: ls -la
@@ -41,5 +40,5 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ secrets.USERNAME_GITHUB }}
           password: ${{ secrets.TOKEN_GITHUB }}
-          dockerfile: ../../../Dockerfile
+          dockerfile: Dockerfile
           tags: latest
