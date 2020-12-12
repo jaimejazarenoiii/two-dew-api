@@ -31,11 +31,6 @@ jobs:
           ruby-version: 2.5.8
           bundler-cache: true
 
-      - name: Run tests
-        working-directory: ./
-        run: |
-          rake test
-
       - name: Publish to Github Packages Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
