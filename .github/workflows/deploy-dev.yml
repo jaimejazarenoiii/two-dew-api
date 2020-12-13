@@ -15,8 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build_and_push:
+  run_tests:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
@@ -24,14 +23,24 @@ jobs:
       - name: Checkout development
         uses: actions/checkout@v2
 
-      - name: Build site assets
-        working-directory: ${{ github.workspace }}
-        run: ls -la
       - name: Install Ruby
         uses: ruby/setup-ruby@v1.59.0
         with:
           ruby-version: 2.5.8
           bundler-cache: true
+          
+      - name: Run tests
+        run: |
+          rake tests
+    
+  build_and_push:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: run_tests
+
+    steps:
+      - name: Checkout development
+        uses: actions/checkout@v2
 
       - name: Publish to Github Packages Registry
         uses: elgohr/Publish-Docker-Github-Action@master
@@ -42,6 +51,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: Dockerfile
           tags: latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: [run_tests, build_and_push]
+    
+    steps:
       - name: Deploy package to digitalocean
         uses: appleboy/ssh-action@master
         env:
@@ -62,4 +78,4 @@ jobs:
             docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
             docker pull docker.pkg.github.com/jaimejazarenoiii/two-dew-api/two-dew:latest
             docker-compose build
-            docker-compose -f docker-compose.pseudo-dev.yml run web -d -p 80:3000 docker.pkg.github.com/jaimejazarenoiii/two-dew-api/two-dew:latest
+            docker-compose run web -d -p 80:3000 docker.pkg.github.com/jaimejazarenoiii/two-dew-api/two-dew:latest
