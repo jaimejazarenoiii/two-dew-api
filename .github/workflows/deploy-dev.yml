@@ -53,6 +53,7 @@ jobs:
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         with:
           host: ${{ secrets.HOST }}
+          username: ${{ secrets.DO_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           envs: GITHUB_USERNAME, GITHUB_TOKEN, HMAC_SECRET, HMAC_ALGORITHM, DATABASE_USERNAME, DATABASE_PASSWORD
